@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -7,6 +8,12 @@ namespace ChromaSDK
 {
     public class Keyboard
     {
+		//! Maximum number of rows in a keyboard.
+		public const int MAX_ROW = 6;
+
+		//! Maximum number of columns in a keyboard.
+		public const int MAX_COLUMN = 22;
+
         //! Definitions of keys.
         public enum RZKEY
         {
@@ -1520,6 +1527,14 @@ namespace ChromaSDK
 		/// <summary>
 		/// Direct access to low level API.
 		/// </summary>
+		public static int CoreInitSDK(IntPtr AppInfo)
+		{
+			int result = PluginCoreInitSDK(AppInfo);
+			return result;
+		}
+		/// <summary>
+		/// Direct access to low level API.
+		/// </summary>
 		public static int CoreQueryDevice(Guid DeviceId, out DEVICE_INFO_TYPE DeviceInfo)
 		{
 			int result = PluginCoreQueryDevice(DeviceId, out DeviceInfo);
@@ -2921,6 +2936,16 @@ namespace ChromaSDK
 		public static double InitD()
 		{
 			double result = PluginInitD();
+			return result;
+		}
+		/// <summary>
+		/// Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero 
+		/// indicates  success, otherwise failure. Many API methods auto initialize 
+		/// the ChromaSDK if not already initialized.
+		/// </summary>
+		public static int InitSDK(IntPtr AppInfo)
+		{
+			int result = PluginInitSDK(AppInfo);
 			return result;
 		}
 		/// <summary>
@@ -5419,6 +5444,23 @@ namespace ChromaSDK
 			return result;
 		}
 		/// <summary>
+		/// Updates the `frameIndex` of the `Chroma` animation and sets the `duration` 
+		/// (in seconds). The `color` is expected to be an array of the dimensions 
+		/// for the `deviceType/device`. The `length` parameter is the size of the 
+		/// `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
+		/// LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
+		/// * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon 
+		/// failure.
+		/// </summary>
+		public static int UpdateFrameName(string path, int frameIndex, float duration, int[] colors, int length)
+		{
+			string pathPath = path;
+			IntPtr lpPath = GetIntPtr(pathPath);
+			int result = PluginUpdateFrameName(lpPath, frameIndex, duration, colors, length);
+			FreeIntPtr(lpPath);
+			return result;
+		}
+		/// <summary>
 		/// When the idle animation flag is true, when no other animations are playing, 
 		/// the idle animation will be used. The idle animation will not be affected 
 		/// by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId, 
@@ -5802,7 +5844,7 @@ namespace ChromaSDK
 		/// Copy animation color for a set of keys from the source animation to the 
 		/// target animation for the given frame. Reference the source and target by 
 		/// id.
-		/// EXPORT_API void PluginCopyKeysColor(int sourceAnimationId, int targetAnimationId, int frameId, int* keys, int size);
+		/// EXPORT_API void PluginCopyKeysColor(int sourceAnimationId, int targetAnimationId, int frameId, const int* keys, int size);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void PluginCopyKeysColor(int sourceAnimationId, int targetAnimationId, int frameId, int[] keys, int size);
@@ -5810,7 +5852,7 @@ namespace ChromaSDK
 		/// Copy animation color for a set of keys from the source animation to the 
 		/// target animation for all frames. Reference the source and target by id. 
 		///
-		/// EXPORT_API void PluginCopyKeysColorAllFrames(int sourceAnimationId, int targetAnimationId, int* keys, int size);
+		/// EXPORT_API void PluginCopyKeysColorAllFrames(int sourceAnimationId, int targetAnimationId, const int* keys, int size);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void PluginCopyKeysColorAllFrames(int sourceAnimationId, int targetAnimationId, int[] keys, int size);
@@ -5818,7 +5860,7 @@ namespace ChromaSDK
 		/// Copy animation color for a set of keys from the source animation to the 
 		/// target animation for all frames. Reference the source and target by name. 
 		///
-		/// EXPORT_API void PluginCopyKeysColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, int* keys, int size);
+		/// EXPORT_API void PluginCopyKeysColorAllFramesName(const char* sourceAnimation, const char* targetAnimation, const int* keys, int size);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void PluginCopyKeysColorAllFramesName(IntPtr sourceAnimation, IntPtr targetAnimation, int[] keys, int size);
@@ -5826,7 +5868,7 @@ namespace ChromaSDK
 		/// Copy animation color for a set of keys from the source animation to the 
 		/// target animation for the given frame. Reference the source and target by 
 		/// name.
-		/// EXPORT_API void PluginCopyKeysColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, int* keys, int size);
+		/// EXPORT_API void PluginCopyKeysColorName(const char* sourceAnimation, const char* targetAnimation, int frameId, const int* keys, int size);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void PluginCopyKeysColorName(IntPtr sourceAnimation, IntPtr targetAnimation, int frameId, int[] keys, int size);
@@ -5834,7 +5876,7 @@ namespace ChromaSDK
 		/// Copy animation color for a set of keys from the source animation to the 
 		/// target animation from the source frame to the target frame. Reference the 
 		/// source and target by id.
-		/// EXPORT_API void PluginCopyKeysColorOffset(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, int* keys, int size);
+		/// EXPORT_API void PluginCopyKeysColorOffset(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, const int* keys, int size);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void PluginCopyKeysColorOffset(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, int[] keys, int size);
@@ -5842,7 +5884,7 @@ namespace ChromaSDK
 		/// Copy animation color for a set of keys from the source animation to the 
 		/// target animation from the source frame to the target frame. Reference the 
 		/// source and target by name.
-		/// EXPORT_API void PluginCopyKeysColorOffsetName(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, int* keys, int size);
+		/// EXPORT_API void PluginCopyKeysColorOffsetName(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void PluginCopyKeysColorOffsetName(IntPtr sourceAnimation, IntPtr targetAnimation, int sourceFrameId, int targetFrameId, int[] keys, int size);
@@ -6217,6 +6259,12 @@ namespace ChromaSDK
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int PluginCoreInit();
+		/// <summary>
+		/// Direct access to low level API.
+		/// EXPORT_API RZRESULT PluginCoreInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
+		/// </summary>
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int PluginCoreInitSDK(IntPtr AppInfo);
 		/// <summary>
 		/// Direct access to low level API.
 		/// EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
@@ -7174,6 +7222,14 @@ namespace ChromaSDK
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern double PluginInitD();
+		/// <summary>
+		/// Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero 
+		/// indicates  success, otherwise failure. Many API methods auto initialize 
+		/// the ChromaSDK if not already initialized.
+		/// EXPORT_API RZRESULT PluginInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
+		/// </summary>
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int PluginInitSDK(IntPtr AppInfo);
 		/// <summary>
 		/// Insert an animation delay by duplicating the frame by the delay number of 
 		/// times. Animation is referenced by id.
@@ -8866,6 +8922,18 @@ namespace ChromaSDK
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int PluginUpdateFrame(int animationId, int frameIndex, float duration, int[] colors, int length);
+		/// <summary>
+		/// Updates the `frameIndex` of the `Chroma` animation and sets the `duration` 
+		/// (in seconds). The `color` is expected to be an array of the dimensions 
+		/// for the `deviceType/device`. The `length` parameter is the size of the 
+		/// `color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX 
+		/// LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` 
+		/// * `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon 
+		/// failure.
+		/// EXPORT_API int PluginUpdateFrameName(const char* path, int frameIndex, float duration, int* colors, int length);
+		/// </summary>
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int PluginUpdateFrameName(IntPtr path, int frameIndex, float duration, int[] colors, int length);
 		/// <summary>
 		/// When the idle animation flag is true, when no other animations are playing, 
 		/// the idle animation will be used. The idle animation will not be affected 

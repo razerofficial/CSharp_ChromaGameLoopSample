@@ -26,47 +26,24 @@ Press `S` for spiral.");
 
             if (sampleApp.GetInitResult() == RazerErrors.RZRESULT_SUCCESS)
             {
+                ThreadStart ts = new ThreadStart(sampleApp.GameLoop);
+                Thread thread = new Thread(ts);
+                thread.Start();
                 while (true)
                 {
                     Console.Clear();
                     PrintLegend(sampleApp);
                     ConsoleKeyInfo keyInfo = Console.ReadKey();
 
+                    sampleApp.HandleInput(keyInfo);
+
                     if (keyInfo.Key == ConsoleKey.Escape)
                     {
-                        sampleApp.OnApplicationQuit();
                         break;
-                    }
-                    else if (keyInfo.Key == ConsoleKey.A)
-                    {
-                        //sampleApp.ExecuteItem();
-                    }
-                    else if (keyInfo.Key == ConsoleKey.F)
-                    {
-                        //sampleApp.ExecuteItem();
-                    }
-                    else if (keyInfo.Key == ConsoleKey.H)
-                    {
-                        //sampleApp.ExecuteItem();
-                    }
-                    else if (keyInfo.Key == ConsoleKey.L)
-                    {
-                        //sampleApp.ExecuteItem();
-                    }
-                    else if (keyInfo.Key == ConsoleKey.R)
-                    {
-                        //sampleApp.ExecuteItem();
-                    }
-                    else if (keyInfo.Key == ConsoleKey.S)
-                    {
-                        //sampleApp.ExecuteItem();
                     }
                     Thread.Sleep(1);
                 }
-
-                ChromaAnimationAPI.StopAll();
-                ChromaAnimationAPI.CloseAll();
-                sampleApp.OnApplicationQuit();
+                thread.Join();
 
             }
 
