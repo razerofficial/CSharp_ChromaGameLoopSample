@@ -150,7 +150,27 @@ namespace ChromaSDK
         };
     }
 
-    [StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct APPINFOTYPE
+	{
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+		public string Title; //TCHAR Title[256];
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+		public string Description; //TCHAR Description[1024];
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+		public string Author_Name; //TCHAR Name[256];
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+		public string Author_Contact; //TCHAR Contact[256];
+
+		public UInt32 SupportedDevice; //DWORD SupportedDevice;
+
+		public UInt32 Category; //DWORD Category;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
     public struct FChromaSDKGuid
     {
         Guid Data;
@@ -1527,9 +1547,9 @@ namespace ChromaSDK
 		/// <summary>
 		/// Direct access to low level API.
 		/// </summary>
-		public static int CoreInitSDK(IntPtr AppInfo)
+		public static int CoreInitSDK(ref ChromaSDK.APPINFOTYPE AppInfo)
 		{
-			int result = PluginCoreInitSDK(AppInfo);
+			int result = PluginCoreInitSDK(ref AppInfo);
 			return result;
 		}
 		/// <summary>
@@ -2943,9 +2963,9 @@ namespace ChromaSDK
 		/// indicates  success, otherwise failure. Many API methods auto initialize 
 		/// the ChromaSDK if not already initialized.
 		/// </summary>
-		public static int InitSDK(IntPtr AppInfo)
+		public static int InitSDK(ref ChromaSDK.APPINFOTYPE AppInfo)
 		{
-			int result = PluginInitSDK(AppInfo);
+			int result = PluginInitSDK(ref AppInfo);
 			return result;
 		}
 		/// <summary>
@@ -6264,7 +6284,7 @@ namespace ChromaSDK
 		/// EXPORT_API RZRESULT PluginCoreInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		private static extern int PluginCoreInitSDK(IntPtr AppInfo);
+		private static extern int PluginCoreInitSDK(ref ChromaSDK.APPINFOTYPE AppInfo);
 		/// <summary>
 		/// Direct access to low level API.
 		/// EXPORT_API RZRESULT PluginCoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
@@ -7229,7 +7249,7 @@ namespace ChromaSDK
 		/// EXPORT_API RZRESULT PluginInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-		private static extern int PluginInitSDK(IntPtr AppInfo);
+		private static extern int PluginInitSDK(ref ChromaSDK.APPINFOTYPE AppInfo);
 		/// <summary>
 		/// Insert an animation delay by duplicating the frame by the delay number of 
 		/// times. Animation is referenced by id.
