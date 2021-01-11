@@ -658,7 +658,8 @@ namespace CSharp_ChromaGameLoopSample
 			{
 
 				// get time
-				int timeMS = DateTime.Now.Millisecond;
+				DateTime now = DateTime.UtcNow;
+				int timeMS = (int)new DateTimeOffset(now).ToUnixTimeMilliseconds() & 0xFFFF;
 
 				// start with a blank frame
 				Array.Clear(colorsChromaLink, 0, sizeChromaLink);
@@ -702,7 +703,7 @@ namespace CSharp_ChromaGameLoopSample
 						for (int i = 0; i < keysLength; ++i)
 						{
 							float ratio = (i + 1) / (float)keysLength;
-							int color = ChromaAnimationAPI.GetRGB(0, (int)(255 * (1 - hp)), 0);
+							int color;
 							if (((i + 1) / ((float)keysLength + 1)) < hp)
 							{
 								color = ChromaAnimationAPI.GetRGB(0, 255, 0);
@@ -733,7 +734,7 @@ namespace CSharp_ChromaGameLoopSample
 						for (int i = 0; i < keysLength; ++i)
 						{
 							float ratio = (i + 1) / (float)keysLength;
-							int color = ChromaAnimationAPI.GetRGB((int)(255 * (1 - hp)), (int)(255 * (1 - hp)), 0);
+							int color;
 							if (((i + 1) / ((float)keysLength + 1)) < hp)
 							{
 								color = ChromaAnimationAPI.GetRGB(255, 255, 0);
