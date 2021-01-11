@@ -172,7 +172,7 @@ namespace CSharp_ChromaGameLoopSample
 
 		int GetKeyColorIndex(int row, int column)
 		{
-			return Keyboard.MAX_COLUMN * row + column;
+			return ChromaAnimationAPI.GetMaxColumn(Device2D.Keyboard) * row + column;
 		}
 
 		void SetKeyColor(int[] colors, int rzkey, int color)
@@ -658,7 +658,7 @@ namespace CSharp_ChromaGameLoopSample
 			{
 
 				// get time
-				int ms = DateTime.Now.Millisecond;
+				int timeMS = DateTime.Now.Millisecond;
 
 				// start with a blank frame
 				Array.Clear(colorsChromaLink, 0, sizeChromaLink);
@@ -697,7 +697,7 @@ namespace CSharp_ChromaGameLoopSample
 						};
 						int keysLength = keys.Length;
 
-						float t = ms * 0.002f;
+						float t = timeMS * 0.002f;
 						float hp = (float)Math.Abs(Math.Cos(Math.PI / 2.0f + t));
 						for (int i = 0; i < keysLength; ++i)
 						{
@@ -728,7 +728,7 @@ namespace CSharp_ChromaGameLoopSample
 						};
 						int keysLength = keys.Length;
 
-						float t = ms * 0.001f;
+						float t = timeMS * 0.001f;
 						float hp = (float)Math.Abs(Math.Cos(Math.PI / 2.0f + t));
 						for (int i = 0; i < keysLength; ++i)
 						{
