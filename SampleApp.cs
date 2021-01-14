@@ -210,6 +210,8 @@ namespace CSharp_ChromaGameLoopSample
 			return maxRow* maxColumn;
 		}
 
+#if !USE_ARRAY_EFFECTS
+
 		void SetupAnimation1D(string path, Device1D device)
 		{
 			int animationId = ChromaAnimationAPI.GetAnimation(path);
@@ -233,6 +235,8 @@ namespace CSharp_ChromaGameLoopSample
 				ChromaAnimationAPI.MakeBlankFramesName(path, 1, 0.1f, 0);
 			}
 		}
+
+#endif
 
 		void SetAmbientColor1D(Device1D device, int[] colors, int ambientColor)
 		{
@@ -716,7 +720,6 @@ namespace CSharp_ChromaGameLoopSample
 						float hp = (float)Math.Abs(Math.Cos(Math.PI / 2.0f + t));
 						for (int i = 0; i < keysLength; ++i)
 						{
-							float ratio = (i + 1) / (float)keysLength;
 							int color;
 							if (((i + 1) / ((float)keysLength + 1)) < hp)
 							{
@@ -747,7 +750,6 @@ namespace CSharp_ChromaGameLoopSample
 						float hp = (float)Math.Abs(Math.Cos(Math.PI / 2.0f + t));
 						for (int i = 0; i < keysLength; ++i)
 						{
-							float ratio = (i + 1) / (float)keysLength;
 							int color;
 							if (((i + 1) / ((float)keysLength + 1)) < hp)
 							{
