@@ -1,4 +1,9 @@
-﻿using ChromaSDK;
+﻿// When true, the sample will set Chroma effects directly from Arrays
+// When false, the sample will use dynamic animations that set Chroma effects
+// using the first frame of the dynamic animation.
+#define USE_ARRAY_EFFECTS
+
+using ChromaSDK;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -102,6 +107,9 @@ namespace CSharp_ChromaGameLoopSample
 		#endregion
 
 
+#if !USE_ARRAY_EFFECTS
+
+
 		// This final animation will have a single frame
 		// Any color changes will immediately display in the next frame update.
 		string ANIMATION_FINAL_CHROMA_LINK = "Dynamic\\Final_ChromaLink.chroma";
@@ -110,6 +118,8 @@ namespace CSharp_ChromaGameLoopSample
 		string ANIMATION_FINAL_KEYPAD = "Dynamic\\Final_Keypad.chroma";
 		string ANIMATION_FINAL_MOUSE = "Dynamic\\Final_Mouse.chroma";
 		string ANIMATION_FINAL_MOUSEPAD = "Dynamic\\Final_Mousepad.chroma";
+
+#endif
 
 		bool _mWaitForExit = true;
 		bool _mHotkeys = true;
@@ -669,12 +679,16 @@ namespace CSharp_ChromaGameLoopSample
 				Array.Clear(colorsMouse, 0, sizeMouse);
 				Array.Clear(colorsMousepad, 0, sizeMousepad);
 
+#if !USE_ARRAY_EFFECTS
+
 				SetupAnimation1D(ANIMATION_FINAL_CHROMA_LINK, Device1D.ChromaLink);
 				SetupAnimation1D(ANIMATION_FINAL_HEADSET, Device1D.Headset);
 				SetupAnimation2D(ANIMATION_FINAL_KEYBOARD, Device2D.Keyboard);
 				SetupAnimation2D(ANIMATION_FINAL_KEYPAD, Device2D.Keypad);
 				SetupAnimation2D(ANIMATION_FINAL_MOUSE, Device2D.Mouse);
 				SetupAnimation1D(ANIMATION_FINAL_MOUSEPAD, Device1D.Mousepad);
+
+#endif
 
 				BlendAnimations(_mScene,
 					colorsChromaLink, tempColorsChromaLink,
@@ -793,6 +807,20 @@ namespace CSharp_ChromaGameLoopSample
 					}
 				}
 
+#if USE_ARRAY_EFFECTS
+
+				ChromaAnimationAPI.SetEffectCustom1D((int)Device1D.ChromaLink, colorsChromaLink);
+				ChromaAnimationAPI.SetEffectCustom1D((int)Device1D.Headset, colorsHeadset);
+				ChromaAnimationAPI.SetEffectCustom1D((int)Device1D.Mousepad, colorsMousepad);
+
+				ChromaAnimationAPI.SetCustomColorFlag2D((int)Device2D.Keyboard, colorsKeyboard);
+				ChromaAnimationAPI.SetEffectKeyboardCustom2D((int)Device2D.Keyboard, colorsKeyboard);
+
+				ChromaAnimationAPI.SetEffectCustom2D((int)Device2D.Keypad, colorsKeypad);
+				ChromaAnimationAPI.SetEffectCustom2D((int)Device2D.Mouse, colorsMouse);
+
+#else
+
 				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_CHROMA_LINK, 0, 0.1f, colorsChromaLink, sizeChromaLink);
 				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_HEADSET, 0, 0.1f, colorsHeadset, sizeHeadset);
 				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_KEYBOARD, 0, 0.1f, colorsKeyboard, sizeKeyboard);
@@ -807,6 +835,8 @@ namespace CSharp_ChromaGameLoopSample
 				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_KEYPAD, 0);
 				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_MOUSE, 0);
 				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_MOUSEPAD, 0);
+
+#endif
 
 				Thread.Sleep(33); //30 FPS
 			}	

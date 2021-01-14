@@ -4481,6 +4481,14 @@ namespace ChromaSDK
 			return result;
 		}
 		/// <summary>
+		/// Set the custom alpha flag on the color array
+		/// </summary>
+		public static int SetCustomColorFlag2D(int device, int[] colors)
+		{
+			int result = PluginSetCustomColorFlag2D(device, colors);
+			return result;
+		}
+		/// <summary>
 		/// Changes the `deviceType` and `device` of a `Chroma` animation. If the device 
 		/// is changed, the `Chroma` animation will be reset with 1 blank frame. Returns 
 		/// the animation id upon success. Returns -1 upon failure.
@@ -4496,6 +4504,31 @@ namespace ChromaSDK
 		public static int SetEffect(Guid effectId)
 		{
 			int result = PluginSetEffect(effectId);
+			return result;
+		}
+		/// <summary>
+		/// SetEffectCustom1D will display the referenced colors immediately
+		/// </summary>
+		public static int SetEffectCustom1D(int device, int[] colors)
+		{
+			int result = PluginSetEffectCustom1D(device, colors);
+			return result;
+		}
+		/// <summary>
+		/// SetEffectCustom2D will display the referenced colors immediately
+		/// </summary>
+		public static int SetEffectCustom2D(int device, int[] colors)
+		{
+			int result = PluginSetEffectCustom2D(device, colors);
+			return result;
+		}
+		/// <summary>
+		/// SetEffectKeyboardCustom2D will display the referenced custom keyboard colors 
+		/// immediately
+		/// </summary>
+		public static int SetEffectKeyboardCustom2D(int device, int[] colors)
+		{
+			int result = PluginSetEffectKeyboardCustom2D(device, colors);
 			return result;
 		}
 		/// <summary>
@@ -8278,6 +8311,12 @@ namespace ChromaSDK
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern double PluginSetCurrentFrameNameD(IntPtr path, double frameId);
 		/// <summary>
+		/// Set the custom alpha flag on the color array
+		/// EXPORT_API RZRESULT PluginSetCustomColorFlag2D(int device, int* colors);
+		/// </summary>
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int PluginSetCustomColorFlag2D(int device, int[] colors);
+		/// <summary>
 		/// Changes the `deviceType` and `device` of a `Chroma` animation. If the device 
 		/// is changed, the `Chroma` animation will be reset with 1 blank frame. Returns 
 		/// the animation id upon success. Returns -1 upon failure.
@@ -8291,6 +8330,25 @@ namespace ChromaSDK
 		/// </summary>
 		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int PluginSetEffect(Guid effectId);
+		/// <summary>
+		/// SetEffectCustom1D will display the referenced colors immediately
+		/// EXPORT_API RZRESULT PluginSetEffectCustom1D(const int device, const int* colors);
+		/// </summary>
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int PluginSetEffectCustom1D(int device, int[] colors);
+		/// <summary>
+		/// SetEffectCustom2D will display the referenced colors immediately
+		/// EXPORT_API RZRESULT PluginSetEffectCustom2D(const int device, const int* colors);
+		/// </summary>
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int PluginSetEffectCustom2D(int device, int[] colors);
+		/// <summary>
+		/// SetEffectKeyboardCustom2D will display the referenced custom keyboard colors 
+		/// immediately
+		/// EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(const int device, const int* colors);
+		/// </summary>
+		[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int PluginSetEffectKeyboardCustom2D(int device, int[] colors);
 		/// <summary>
 		/// When the idle animation is used, the named animation will play when no other 
 		/// animations are playing. Reference the animation by id.
