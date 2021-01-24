@@ -625,13 +625,10 @@ namespace CSharp_ChromaGameLoopSample
 			int[] tempColorsMouse = new int[sizeMouse];
 			int[] tempColorsMousepad = new int[sizeMousepad];
 
+			uint timeMS = 0;
+
 			while (_mWaitForExit)
 			{
-
-				// get time
-				DateTime now = DateTime.UtcNow;
-				int timeMS = (int)new DateTimeOffset(now).ToUnixTimeMilliseconds() & 0xFFFF;
-
 				// start with a blank frame
 				Array.Clear(colorsChromaLink, 0, sizeChromaLink);
 				Array.Clear(colorsHeadset, 0, sizeHeadset);
@@ -798,6 +795,7 @@ namespace CSharp_ChromaGameLoopSample
 #endif
 
 				Thread.Sleep(33); //30 FPS
+				timeMS += 33;
 			}	
 
 		}
