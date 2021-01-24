@@ -58,41 +58,41 @@ namespace CSharp_ChromaGameLoopSample
 			}
 
 			// setup scene
-			_mScene = new Scene();
+			_mScene = new FChromaSDKScene();
 
-			Effect effect = new Effect();
+			FChromaSDKSceneEffect effect = new FChromaSDKSceneEffect();
 			effect._mAnimation = "Animations/Landscape";
 			effect._mSpeed = 1;
-			effect._mBlend = "none";
+			effect._mBlend = EChromaSDKSceneBlend.SB_None;
 			effect._mState = false;
-			effect._mMode = "replace";
+			effect._mMode = EChromaSDKSceneMode.SM_Add;
 			_mScene._mEffects.Add(effect);
 			_mIndexLandscape = (int)_mScene._mEffects.Count - 1;
 
-			effect = new Effect();
+			effect = new FChromaSDKSceneEffect();
 			effect._mAnimation = "Animations/Fire";
 			effect._mSpeed = 1;
-			effect._mBlend = "none";
+			effect._mBlend = EChromaSDKSceneBlend.SB_None;
 			effect._mState = false;
-			effect._mMode = "replace";
+			effect._mMode = EChromaSDKSceneMode.SM_Add;
 			_mScene._mEffects.Add(effect);
 			_mIndexFire = (int)_mScene._mEffects.Count - 1;
 
-			effect = new Effect();
+			effect = new FChromaSDKSceneEffect();
 			effect._mAnimation = "Animations/Rainbow";
 			effect._mSpeed = 1;
-			effect._mBlend = "none";
+			effect._mBlend = EChromaSDKSceneBlend.SB_None;
 			effect._mState = false;
-			effect._mMode = "replace";
+			effect._mMode = EChromaSDKSceneMode.SM_Add;
 			_mScene._mEffects.Add(effect);
 			_mIndexRainbow = (int)_mScene._mEffects.Count - 1;
 
-			effect = new Effect();
+			effect = new FChromaSDKSceneEffect();
 			effect._mAnimation = "Animations/Spiral";
 			effect._mSpeed = 1;
-			effect._mBlend = "none";
+			effect._mBlend = EChromaSDKSceneBlend.SB_None;
 			effect._mState = false;
-			effect._mMode = "replace";
+			effect._mMode = EChromaSDKSceneMode.SM_Add;
 			_mScene._mEffects.Add(effect);
 			_mIndexSpiral = (int)_mScene._mEffects.Count - 1;
 		}
@@ -129,44 +129,7 @@ namespace CSharp_ChromaGameLoopSample
 		int _mIndexRainbow = -1;
 		int _mIndexSpiral = -1;
 
-
-		class DeviceFrameIndex
-		{
-			// Index corresponds to EChromaSDKDeviceEnum;
-			public int[] _mFrameIndex = new int[6];
-
-			public DeviceFrameIndex()
-			{
-				_mFrameIndex[(int)Device.ChromaLink] = 0;
-				_mFrameIndex[(int)Device.Headset] = 0;
-				_mFrameIndex[(int)Device.Keyboard] = 0;
-				_mFrameIndex[(int)Device.Keypad] = 0;
-				_mFrameIndex[(int)Device.Mouse] = 0;
-				_mFrameIndex[(int)Device.Mousepad] = 0;
-			}
-		}
-
-		class Effect
-		{
-			public string _mAnimation = "";
-			public bool _mState = false;
-			public int _mPrimaryColor = 0;
-			public int _mSecondaryColor = 0;
-			public int _mSpeed = 1;
-			public string _mBlend = "";
-			public string _mMode = "";
-
-			public DeviceFrameIndex _mFrameIndex = new DeviceFrameIndex();
-		}
-
-
-		class Scene
-		{
-			public List<Effect> _mEffects = new List<Effect>();
-		}
-
-
-		Scene _mScene = null;
+		FChromaSDKScene _mScene = null;
 
 
 		int HIBYTE(int a)
@@ -430,7 +393,7 @@ namespace CSharp_ChromaGameLoopSample
 		}
 
 
-		void BlendAnimation1D(Effect effect, DeviceFrameIndex deviceFrameIndex, int device, Device1D device1d, string animationName,
+		void BlendAnimation1D(FChromaSDKSceneEffect effect, FChromaSDKDeviceFrameIndex deviceFrameIndex, int device, Device1D device1d, string animationName,
 			int[] colors, int[] tempColors)
 		{
 			int size = GetColorArraySize1D(device1d);
@@ -449,68 +412,65 @@ namespace CSharp_ChromaGameLoopSample
 
 					// BLEND
 					int color2;
-					if (effect._mBlend == "none")
+					switch (effect._mBlend)
 					{
-						color2 = tempColor; //source
-					}
-					else if (effect._mBlend == "invert")
-					{
-						if (tempColor != 0) //source
-						{
-							color2 = InvertColor(tempColor); //source inverted
-						}
-						else
-						{
-							color2 = 0;
-						}
-					}
-					else if (effect._mBlend == "thresh")
-					{
-						color2 = Thresh(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
-					}
-					else // if (effect._mBlend == "lerp") //default
-					{
-						color2 = MultiplyNonZeroTargetColorLerp(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
+						case EChromaSDKSceneBlend.SB_None:
+							color2 = tempColor; //source
+							break;
+						case EChromaSDKSceneBlend.SB_Invert:
+							if (tempColor != 0) //source
+							{
+								color2 = InvertColor(tempColor); //source inverted
+							}
+							else
+							{
+								color2 = 0;
+							}
+							break;
+						case EChromaSDKSceneBlend.SB_Threshold:
+							color2 = Thresh(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
+							break;
+						case EChromaSDKSceneBlend.SB_Lerp:
+						default:
+							color2 = MultiplyNonZeroTargetColorLerp(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
+							break;
 					}
 
 					// MODE
-					if (effect._mMode == "max")
+					switch (effect._mMode)
 					{
-						colors[i] = MaxColor(color1, color2);
-					}
-					else if (effect._mMode == "min")
-					{
-						colors[i] = MinColor(color1, color2);
-					}
-					else if (effect._mMode == "average")
-					{
-						colors[i] = AverageColor(color1, color2);
-					}
-					else if (effect._mMode == "multiply")
-					{
-						colors[i] = MultiplyColor(color1, color2);
-					}
-					else if (effect._mMode == "add")
-					{
-						colors[i] = AddColor(color1, color2);
-					}
-					else if (effect._mMode == "subtract")
-					{
-						colors[i] = SubtractColor(color1, color2);
-					}
-					else // if (effect._mMode == "replace") //default
-					{
-						if (color2 != 0)
-						{
-							colors[i] = color2;
-						}
+						case EChromaSDKSceneMode.SM_Max:
+							colors[i] = MaxColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Min:
+							colors[i] = MinColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Average:
+							colors[i] = AverageColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Multiply:
+							colors[i] = MultiplyColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Add:
+							colors[i] = AddColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Subtract:
+							colors[i] = SubtractColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Replace:
+						default:
+							if (color2 != 0)
+							{
+								colors[i] = color2;
+							}
+							break;
 					}
 				}
 				deviceFrameIndex._mFrameIndex[device] = (frameId + frameCount + effect._mSpeed) % frameCount;
 			}
 		}
 
-		void BlendAnimation2D(Effect effect, DeviceFrameIndex deviceFrameIndex, int device, Device2D device2D, string animationName,
+		void BlendAnimation2D(FChromaSDKSceneEffect effect, FChromaSDKDeviceFrameIndex deviceFrameIndex, int device, Device2D device2D, string animationName,
 			int[] colors, int[] tempColors)
 		{
 			int size = GetColorArraySize2D(device2D);
@@ -529,68 +489,65 @@ namespace CSharp_ChromaGameLoopSample
 
 					// BLEND
 					int color2;
-					if (effect._mBlend == "none")
+					switch (effect._mBlend)
 					{
-						color2 = tempColor; //source
-					}
-					else if (effect._mBlend == "invert")
-					{
-						if (tempColor != 0) //source
-						{
-							color2 = InvertColor(tempColor); //source inverted
-						}
-						else
-						{
-							color2 = 0;
-						}
-					}
-					else if (effect._mBlend == "thresh")
-					{
-						color2 = Thresh(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
-					}
-					else // if (effect._mBlend == "lerp") //default
-					{
-						color2 = MultiplyNonZeroTargetColorLerp(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
+						case EChromaSDKSceneBlend.SB_None:
+							color2 = tempColor; //source
+							break;
+						case EChromaSDKSceneBlend.SB_Invert:
+							if (tempColor != 0) //source
+							{
+								color2 = InvertColor(tempColor); //source inverted
+							}
+							else
+							{
+								color2 = 0;
+							}
+							break;
+						case EChromaSDKSceneBlend.SB_Threshold:
+							color2 = Thresh(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
+							break;
+						case EChromaSDKSceneBlend.SB_Lerp:
+						default:
+							color2 = MultiplyNonZeroTargetColorLerp(effect._mPrimaryColor, effect._mSecondaryColor, tempColor); //source
+							break;
 					}
 
 					// MODE
-					if (effect._mMode == "max")
+					switch (effect._mMode)
 					{
-						colors[i] = MaxColor(color1, color2);
-					}
-					else if (effect._mMode == "min")
-					{
-						colors[i] = MinColor(color1, color2);
-					}
-					else if (effect._mMode == "average")
-					{
-						colors[i] = AverageColor(color1, color2);
-					}
-					else if (effect._mMode == "multiply")
-					{
-						colors[i] = MultiplyColor(color1, color2);
-					}
-					else if (effect._mMode == "add")
-					{
-						colors[i] = AddColor(color1, color2);
-					}
-					else if (effect._mMode == "subtract")
-					{
-						colors[i] = SubtractColor(color1, color2);
-					}
-					else // if (effect._mMode == "replace") //default
-					{
-						if (color2 != 0)
-						{
-							colors[i] = color2;
-						}
+						case EChromaSDKSceneMode.SM_Max:
+							colors[i] = MaxColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Min:
+							colors[i] = MinColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Average:
+							colors[i] = AverageColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Multiply:
+							colors[i] = MultiplyColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Add:
+							colors[i] = AddColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Subtract:
+							colors[i] = SubtractColor(color1, color2);
+							break;
+						case EChromaSDKSceneMode.SM_Replace:
+						default:
+							if (color2 != 0)
+							{
+								colors[i] = color2;
+							}
+							break;
 					}
 				}
 				deviceFrameIndex._mFrameIndex[device] = (frameId + frameCount + effect._mSpeed) % frameCount;
 			}
 		}
 
-		void BlendAnimations(Scene scene,
+		void BlendAnimations(FChromaSDKScene scene,
 			int[] colorsChromaLink, int[] tempColorsChromaLink,
 			int[] colorsHeadset, int[] tempColorsHeadset,
 			int[] colorsKeyboard, int[] tempColorsKeyboard,
@@ -599,12 +556,12 @@ namespace CSharp_ChromaGameLoopSample
 			int[] colorsMousepad, int[] tempColorsMousepad)
 		{
 			// blend active animations
-			List<Effect> effects = scene._mEffects;
-			foreach (Effect effect in effects)
+			List<FChromaSDKSceneEffect> effects = scene._mEffects;
+			foreach (FChromaSDKSceneEffect effect in effects)
 			{
 				if (effect._mState)
 				{
-					DeviceFrameIndex deviceFrameIndex = effect._mFrameIndex;
+					FChromaSDKDeviceFrameIndex deviceFrameIndex = effect._mFrameIndex;
 
 					//iterate all device types
 					for (int d = (int)Device.ChromaLink; d < (int)Device.MAX; ++d)

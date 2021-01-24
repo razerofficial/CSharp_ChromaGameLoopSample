@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -239,17 +240,70 @@ namespace ChromaSDK
             MAX = 3,
         }
 
+		public class FChromaSDKDeviceFrameIndex
+		{
+			// Index corresponds to EChromaSDKDeviceEnum;
+			public int[] _mFrameIndex = new int[6];
 
-#endregion
+			public FChromaSDKDeviceFrameIndex()
+			{
+				_mFrameIndex[(int)Device.ChromaLink] = 0;
+				_mFrameIndex[(int)Device.Headset] = 0;
+				_mFrameIndex[(int)Device.Keyboard] = 0;
+				_mFrameIndex[(int)Device.Keypad] = 0;
+				_mFrameIndex[(int)Device.Mouse] = 0;
+				_mFrameIndex[(int)Device.Mousepad] = 0;
+			}
+		}
 
-#region Helpers (handle path conversions)
+		public enum EChromaSDKSceneBlend
+		{
+			SB_None,
+			SB_Invert,
+			SB_Threshold,
+			SB_Lerp,
+		};
 
-        /// <summary>
-        /// Helper to convert string to IntPtr
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private static IntPtr GetIntPtr(string path)
+		public enum EChromaSDKSceneMode
+		{
+			SM_Replace,
+			SM_Max,
+			SM_Min,
+			SM_Average,
+			SM_Multiply,
+			SM_Add,
+			SM_Subtract,
+		};
+
+		public class FChromaSDKSceneEffect
+		{
+			public string _mAnimation = "";
+			public bool _mState = false;
+			public int _mPrimaryColor = 0;
+			public int _mSecondaryColor = 0;
+			public int _mSpeed = 1;
+			public EChromaSDKSceneBlend _mBlend = EChromaSDKSceneBlend.SB_None;
+			public EChromaSDKSceneMode _mMode = EChromaSDKSceneMode.SM_Replace;
+
+			public FChromaSDKDeviceFrameIndex _mFrameIndex = new FChromaSDKDeviceFrameIndex();
+		}
+
+
+		public class FChromaSDKScene
+		{
+			public List<FChromaSDKSceneEffect> _mEffects = new List<FChromaSDKSceneEffect>();
+		}
+
+		#endregion
+
+		#region Helpers (handle path conversions)
+
+		/// <summary>
+		/// Helper to convert string to IntPtr
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		private static IntPtr GetIntPtr(string path)
         {
             if (string.IsNullOrEmpty(path))
             {
