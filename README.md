@@ -2,7 +2,7 @@
 
 * Note: Visit the [Chroma Animation Guide](https://chroma.razer.com/ChromaGuide/) to find the latest supported plugin for Chroma RGB.
 
-# C# - Chroma Gameloop Sample App #
+# C# - Chroma Game Loop Sample App #
 
 **Table of Contents**
 
@@ -37,7 +37,7 @@
 
 ## About ##
 
-The `Chroma Gameloop Sample App` is a C# sample project that dynamically sets colors in a game loop.
+The `Chroma Game Loop Sample App` is a C# sample project that dynamically sets colors in a game loop.
 
 **Screenshot:**
 
@@ -6677,6 +6677,7 @@ double result = ChromaAnimationAPI.SubtractThresholdColorsMinMaxRGBNameD(string 
 **TrimEndFrames**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
+
 * 1. Reference the animation by id.
 
 ```charp
@@ -6689,6 +6690,7 @@ ChromaAnimationAPI.TrimEndFrames(int animationId, int lastFrameId);
 **TrimEndFramesName**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
+
 * 1. Reference the animation by name.
 
 ```charp
