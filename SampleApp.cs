@@ -750,7 +750,7 @@ namespace CSharp_ChromaGameLoopSample
 
 				if (_mAmmo)
 				{
-					// SHow health animation
+					// Show health animation
 					{
 						int[] keys = {
 							(int)Keyboard.RZKEY.RZKEY_F1,

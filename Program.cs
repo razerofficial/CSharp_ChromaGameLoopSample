@@ -115,10 +115,6 @@ Press `S` for spiral.");
                     {
                         sampleApp.ExecuteItem(selectedIndex, supportsStreaming);
                     }
-                    else if (keyInfo.Key == ConsoleKey.Escape)
-                    {
-                        break;
-                    }
                     Thread.Sleep(1);
                 }
                 thread.Join();
