@@ -6,7 +6,7 @@ namespace CSharp_ChromaGameLoopSample
 {
     class Program
     {
-        static void PrintLegend(SampleApp app, int startIndex, int selectedIndex, int maxItems)
+        static void PrintLegend(SampleApp app, int startIndex, int selectedIndex, int maxItems, bool supportsStreaming)
         {
             Console.WriteLine(@"C# GAME LOOP CHROMA SAMPLE APP
 
@@ -18,7 +18,7 @@ Press `L` for landscape.
 Press `R` for rainbow.
 Press `S` for spiral.");
 
-            if (ChromaAnimationAPI.CoreStreamSupportsStreaming())
+            if (supportsStreaming)
             {
                 Console.WriteLine();
 
@@ -69,6 +69,8 @@ Press `S` for spiral.");
 
             if (sampleApp.GetInitResult() == RazerErrors.RZRESULT_SUCCESS)
             {
+                bool supportsStreaming = ChromaAnimationAPI.CoreStreamSupportsStreaming();
+
                 const int START_INDEX = -9;
                 const int MAX_ITEMS = 0;
 
@@ -84,7 +86,7 @@ Press `S` for spiral.");
                     if (inputTimer < DateTime.Now)
                     {
                         Console.Clear();
-                        PrintLegend(sampleApp, START_INDEX, selectedIndex, MAX_ITEMS);
+                        PrintLegend(sampleApp, START_INDEX, selectedIndex, MAX_ITEMS, supportsStreaming);
                         inputTimer = DateTime.Now + TimeSpan.FromMilliseconds(100);
                     }
                     ConsoleKeyInfo keyInfo = Console.ReadKey();
@@ -111,7 +113,7 @@ Press `S` for spiral.");
                     }
                     else if (keyInfo.Key == ConsoleKey.Enter)
                     {
-                        sampleApp.ExecuteItem(selectedIndex);
+                        sampleApp.ExecuteItem(selectedIndex, supportsStreaming);
                     }
                     else if (keyInfo.Key == ConsoleKey.Escape)
                     {
