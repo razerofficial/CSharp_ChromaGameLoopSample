@@ -6,11 +6,18 @@ namespace CSharp_ChromaGameLoopSample
 {
     class Program
     {
-        static void PrintLegend(SampleApp app, int startIndex, int selectedIndex, int maxItems, bool supportsStreaming)
+        static void PrintLegend(SampleApp app, int startIndex, int selectedIndex, int maxItems, bool supportsStreaming, byte platform)
         {
-            Console.WriteLine(@"C# GAME LOOP CHROMA SAMPLE APP
+            Console.WriteLine("C# GAME LOOP CHROMA SAMPLE APP");
 
-Press `ESC` to Quit.
+            Console.WriteLine();
+
+            if (supportsStreaming)
+            {
+                Console.Write("Use `P` to switch streaming platforms. ");
+            }
+
+            Console.WriteLine(@"Press `ESC` to Quit.
 Press `A` for ammo/health.
 Press `F` for fire.
 Press `H` to toggle hotkeys.
@@ -41,7 +48,7 @@ Press `S` for spiral.");
                     {
                         Console.Write("[ ] ");
                     }
-                    Console.Write("{0, 8}", app.GetEffectName(index));
+                    Console.Write("{0, 8}", app.GetEffectName(index, platform));
 
                     if (index > 0)
                     {
@@ -76,6 +83,8 @@ Press `S` for spiral.");
 
                 int selectedIndex = START_INDEX;
 
+                byte platform = 0;
+
                 DateTime inputTimer = DateTime.MinValue;
 
                 ThreadStart ts = new ThreadStart(sampleApp.GameLoop);
@@ -86,7 +95,7 @@ Press `S` for spiral.");
                     if (inputTimer < DateTime.Now)
                     {
                         Console.Clear();
-                        PrintLegend(sampleApp, START_INDEX, selectedIndex, MAX_ITEMS, supportsStreaming);
+                        PrintLegend(sampleApp, START_INDEX, selectedIndex, MAX_ITEMS, supportsStreaming, platform);
                         inputTimer = DateTime.Now + TimeSpan.FromMilliseconds(100);
                     }
                     ConsoleKeyInfo keyInfo = Console.ReadKey();
@@ -111,9 +120,13 @@ Press `S` for spiral.");
                     {
                         break;
                     }
+                    else if (keyInfo.Key == ConsoleKey.P)
+                    {
+                        platform = (byte)((platform + 1) % 4); //PC, AMAZON LUNA, MS GAME PASS, NVIDIA GFN
+                    }
                     else if (keyInfo.Key == ConsoleKey.Enter)
                     {
-                        sampleApp.ExecuteItem(selectedIndex, supportsStreaming);
+                        sampleApp.ExecuteItem(selectedIndex, supportsStreaming, platform);
                     }
                     Thread.Sleep(1);
                 }
