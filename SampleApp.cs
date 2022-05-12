@@ -14,14 +14,76 @@ namespace CSharp_ChromaGameLoopSample
 	public class SampleApp
 	{
 		#region Init/Uninit
+
 		private int _mResult = 0;
 
-		public int GetInitResult()
-		{
-			return _mResult;
-		}
+        string _mShortCode = ChromaSDK.Stream.Default.Shortcode;
+        byte _mLenShortCode = 0;
 
-		public void Start()
+        string _mStreamId = ChromaSDK.Stream.Default.StreamId;
+        byte _mLenStreamId = 0;
+
+        string _mStreamKey = ChromaSDK.Stream.Default.StreamKey;
+        byte _mLenStreamKey = 0;
+
+        string _mStreamFocus = ChromaSDK.Stream.Default.StreamFocus;
+        byte _mLenStreamFocus = 0;
+        string _mStreamFocusGuid = "UnitTest-" + Guid.NewGuid();
+
+        public int GetInitResult()
+        {
+            return _mResult;
+        }
+
+        public string GetShortcode()
+        {
+            if (_mLenShortCode == 0)
+            {
+                return "NOT_SET";
+            }
+            else
+            {
+                return _mShortCode;
+            }
+        }
+
+        public string GetStreamId()
+        {
+            if (_mLenStreamId == 0)
+            {
+                return "NOT_SET";
+            }
+            else
+            {
+                return _mStreamId;
+            }
+        }
+
+        public string GetStreamKey()
+        {
+            if (_mLenStreamKey == 0)
+            {
+                return "NOT_SET";
+            }
+            else
+            {
+                return _mStreamKey;
+            }
+        }
+
+        public string GetStreamFocus()
+        {
+            if (_mLenStreamFocus == 0)
+            {
+                return "NOT_SET";
+            }
+            else
+            {
+                return _mStreamFocus;
+            }
+        }
+
+        public void Start()
 		{
 			ChromaSDK.APPINFOTYPE appInfo = new APPINFOTYPE();
 			appInfo.Title = "Razer Chroma CSharp Game Loop Sample Application";
@@ -83,7 +145,7 @@ namespace CSharp_ChromaGameLoopSample
 			effect._mAnimation = "Animations/Rainbow";
 			effect._mSpeed = 1;
 			effect._mBlend = EChromaSDKSceneBlend.SB_None;
-			effect._mState = false;
+			effect._mState = true;
 			effect._mMode = EChromaSDKSceneMode.SM_Add;
 			_mScene._mEffects.Add(effect);
 			_mIndexRainbow = (int)_mScene._mEffects.Count - 1;
@@ -100,12 +162,66 @@ namespace CSharp_ChromaGameLoopSample
 		void OnApplicationQuit()
 		{
 			_mWaitForExit = false;
-			ChromaAnimationAPI.StopAll();
-			ChromaAnimationAPI.CloseAll();
-			ChromaAnimationAPI.Uninit();
-		}
+            if (_mResult == RazerErrors.RZRESULT_SUCCESS)
+            {
+                ChromaAnimationAPI.StopAll();
+                ChromaAnimationAPI.CloseAll();
+                int result = ChromaAnimationAPI.Uninit();
+                ChromaAnimationAPI.UninitAPI();
+                if (result != RazerErrors.RZRESULT_SUCCESS)
+                {
+                    Console.Error.WriteLine("Failed to uninitialize Chroma!");
+                }
+            }
+        }
 
-		#endregion
+        public string GetEffectName(int index, byte platform)
+        {
+            switch (index)
+            {
+                case -9:
+                    string result = "Request Shortcode for Platform: ";
+
+                    switch (platform)
+                    {
+                        case 0:
+                            result += "Windows PC (PC)";
+                            break;
+                        case 1:
+                            result += "Windows Cloud (LUNA)";
+                            break;
+                        case 2:
+                            result += "Windows Cloud (GEFORCE NOW)";
+                            break;
+                        case 3:
+                            result += "Windows Cloud (GAME PASS)";
+                            break;
+                    }
+                    return result + System.Environment.NewLine;
+                case -8:
+                    return "Request StreamId\t";
+                case -7:
+                    return "Request StreamKey\t";
+                case -6:
+                    return "Release Shortcode\r\n";
+                case -5:
+                    return "Broadcast\t\t";
+                case -4:
+                    return "BroadcastEnd\r\n";
+                case -3:
+                    return "Watch\t\t";
+                case -2:
+                    return "WatchEnd\r\n";
+                case -1:
+                    return "GetFocus\t\t";
+                case 0:
+                    return "SetFocus\r\n";
+                default:
+                    return string.Format("Effect{0}", index);
+            }
+        }
+
+        #endregion
 
 
 #if !USE_ARRAY_EFFECTS
@@ -122,9 +238,9 @@ namespace CSharp_ChromaGameLoopSample
 
 #endif
 
-		bool _mWaitForExit = true;
+        bool _mWaitForExit = true;
 		bool _mHotkeys = true;
-		bool _mAmmo = false;
+		bool _mAmmo = true;
 		int _mIndexLandscape = -1;
 		int _mIndexFire = -1;
 		int _mIndexRainbow = -1;
@@ -659,7 +775,7 @@ namespace CSharp_ChromaGameLoopSample
 
 				if (_mAmmo)
 				{
-					// SHow health animation
+					// Show health animation
 					{
 						int[] keys = {
 							(int)Keyboard.RZKEY.RZKEY_F1,
@@ -832,5 +948,113 @@ namespace CSharp_ChromaGameLoopSample
 			}
 		}
 
-	}
+        public void ExecuteItem(int index, bool supportsStreaming, byte platform)
+        {
+            switch (index)
+            {
+                case -9:
+                    if (supportsStreaming)
+                    {
+                        _mShortCode = ChromaSDK.Stream.Default.Shortcode;
+                        _mLenShortCode = 0;
+                        string strPlatform = "PC";
+                        switch (platform)
+                        {
+                            case 0:
+                                strPlatform = "PC";
+                                break;
+                            case 1:
+                                strPlatform = "LUNA";
+                                break;
+                            case 2:
+                                strPlatform = "GEFORCE_NOW";
+                                break;
+                            case 3:
+                                strPlatform = "GAME_PASS";
+                                break;
+                        }
+                        ChromaAnimationAPI.CoreStreamGetAuthShortcode(ref _mShortCode, out _mLenShortCode, strPlatform, "C# Game Loop Sample App 好");
+                    }
+                    break;
+                case -8:
+                    if (supportsStreaming)
+                    {
+                        _mStreamId = ChromaSDK.Stream.Default.StreamId;
+                        _mLenStreamId = 0;
+                        ChromaAnimationAPI.CoreStreamGetId(_mShortCode, ref _mStreamId, out _mLenStreamId);
+                        if (_mLenStreamId > 0)
+                        {
+                            _mStreamId = _mStreamId.Substring(0, _mLenStreamId);
+                        }
+                    }
+                    break;
+                case -7:
+                    if (supportsStreaming)
+                    {
+                        _mStreamKey = ChromaSDK.Stream.Default.StreamKey;
+                        _mLenStreamKey = 0;
+                        ChromaAnimationAPI.CoreStreamGetKey(_mShortCode, ref _mStreamKey, out _mLenStreamKey);
+                        if (_mLenStreamId > 0)
+                        {
+                            _mStreamKey = _mStreamKey.Substring(0, _mLenStreamKey);
+                        }
+                    }
+                    break;
+                case -6:
+                    if (supportsStreaming &&
+                        ChromaAnimationAPI.CoreStreamReleaseShortcode(_mShortCode))
+                    {
+                        _mShortCode = ChromaSDK.Stream.Default.Shortcode;
+                        _mLenShortCode = 0;
+                    }
+                    break;
+                case -5:
+                    if (supportsStreaming &&
+                        _mLenStreamId > 0 &&
+                        _mLenStreamKey > 0)
+                    {
+                        ChromaAnimationAPI.CoreStreamBroadcast(_mStreamId, _mStreamKey);
+                    }
+                    break;
+                case -4:
+                    if (supportsStreaming)
+                    {
+                        ChromaAnimationAPI.CoreStreamBroadcastEnd();
+                    }
+                    break;
+                case -3:
+                    if (supportsStreaming &&
+                        _mLenStreamId > 0)
+                    {
+                        ChromaAnimationAPI.CoreStreamWatch(_mStreamId, 0);
+                    }
+                    break;
+                case -2:
+                    if (supportsStreaming)
+                    {
+                        ChromaAnimationAPI.CoreStreamWatchEnd();
+                    }
+                    break;
+                case -1:
+                    if (supportsStreaming)
+                    {
+                        _mStreamFocus = ChromaSDK.Stream.Default.StreamFocus;
+                        _mLenStreamFocus = 0;
+                        ChromaAnimationAPI.CoreStreamGetFocus(ref _mStreamFocus, out _mLenStreamFocus);
+                    }
+                    break;
+                case 0:
+                    if (supportsStreaming)
+                    {
+                        ChromaAnimationAPI.CoreStreamSetFocus(_mStreamFocusGuid);
+
+                        _mStreamFocus = ChromaSDK.Stream.Default.StreamFocus;
+                        _mLenStreamFocus = 0;
+                        ChromaAnimationAPI.CoreStreamGetFocus(ref _mStreamFocus, out _mLenStreamFocus);
+                    }
+                    break;
+            }
+        }
+
+    }
 }
