@@ -164,13 +164,16 @@ namespace CSharp_ChromaGameLoopSample
 			_mWaitForExit = false;
             if (_mResult == RazerErrors.RZRESULT_SUCCESS)
             {
-                ChromaAnimationAPI.StopAll();
-                ChromaAnimationAPI.CloseAll();
-                int result = ChromaAnimationAPI.Uninit();
-                ChromaAnimationAPI.UninitAPI();
-                if (result != RazerErrors.RZRESULT_SUCCESS)
+                if (ChromaAnimationAPI.IsInitialized())
                 {
-                    Console.Error.WriteLine("Failed to uninitialize Chroma!");
+                    ChromaAnimationAPI.StopAll();
+                    ChromaAnimationAPI.CloseAll();
+                    int result = ChromaAnimationAPI.Uninit();
+                    ChromaAnimationAPI.UninitAPI();
+                    if (result != RazerErrors.RZRESULT_SUCCESS)
+                    {
+                        Console.Error.WriteLine("Failed to uninitialize Chroma!");
+                    }
                 }
             }
         }
