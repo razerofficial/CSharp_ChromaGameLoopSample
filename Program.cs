@@ -17,13 +17,15 @@ namespace CSharp_ChromaGameLoopSample
                 Console.Write("Use `P` to switch streaming platforms. ");
             }
 
-            Console.WriteLine(@"Press `ESC` to Quit.
-Press `A` for ammo/health.
-Press `F` for fire.
-Press `H` to toggle hotkeys.
-Press `L` for landscape.
-Press `R` for rainbow.
-Press `S` for spiral.");
+            Console.WriteLine("Press `ESC` to Quit.");
+            Console.WriteLine("Press `H` to toggle hotkeys [{0}]", app.GetHotkeys() ? "ON" : "OFF");
+            Console.WriteLine("Press `E` to toggle extended keyboard [{0}]", app.GetExtended() ? "ON" : "OFF");
+            Console.WriteLine("Press `A` for ammo/health. [{0}]", app.GetAmmo() ? "ON" : "OFF");
+            Console.WriteLine("Press `1` for gradient 1 [{0}]", app.GetStateIndexGradient1() ? "ON" : "OFF");
+            Console.WriteLine("Press `2` for gradient 2 [{0}]", app.GetStateIndexGradient2() ? "ON" : "OFF");
+            Console.WriteLine("Press `3` for gradient 3 [{0}]", app.GetStateIndexGradient3() ? "ON" : "OFF");
+            Console.WriteLine("Press `4` for gradient 4 [{0}]", app.GetStateIndexGradient4() ? "ON" : "OFF");
+            Console.WriteLine("Press `C` to change base color.");
 
             if (supportsStreaming)
             {

@@ -83,83 +83,95 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChromaAnimationAPI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RazerErrors.cs" />
+    <Compile Include="Razer\ChromaAnimationAPI.cs" />
+    <Compile Include="Razer\RazerErrors.cs" />
     <Compile Include="SampleApp.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Animations\Fire_ChromaLink.chroma">
+    <None Include="Animations\Gradient1_ChromaLink.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Fire_Headset.chroma">
+    <None Include="Animations\Gradient1_Headset.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Fire_Keyboard.chroma">
+    <None Include="Animations\Gradient1_Keyboard.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Fire_Keypad.chroma">
+    <None Include="Animations\Gradient1_KeyboardExtended.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Fire_Mouse.chroma">
+    <None Include="Animations\Gradient1_Keypad.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Fire_Mousepad.chroma">
+    <None Include="Animations\Gradient1_Mouse.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Landscape_ChromaLink.chroma">
+    <None Include="Animations\Gradient1_Mousepad.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Landscape_Headset.chroma">
+    <None Include="Animations\Gradient2_ChromaLink.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Landscape_Keyboard.chroma">
+    <None Include="Animations\Gradient2_Headset.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Landscape_Keypad.chroma">
+    <None Include="Animations\Gradient2_Keyboard.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Landscape_Mouse.chroma">
+    <None Include="Animations\Gradient2_KeyboardExtended.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Landscape_Mousepad.chroma">
+    <None Include="Animations\Gradient2_Keypad.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Rainbow_ChromaLink.chroma">
+    <None Include="Animations\Gradient2_Mouse.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Rainbow_Headset.chroma">
+    <None Include="Animations\Gradient2_Mousepad.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Rainbow_Keyboard.chroma">
+    <None Include="Animations\Gradient3_ChromaLink.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Rainbow_Keypad.chroma">
+    <None Include="Animations\Gradient3_Headset.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Rainbow_Mouse.chroma">
+    <None Include="Animations\Gradient3_Keyboard.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Rainbow_Mousepad.chroma">
+    <None Include="Animations\Gradient3_KeyboardExtended.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Spiral_ChromaLink.chroma">
+    <None Include="Animations\Gradient3_Keypad.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Spiral_Headset.chroma">
+    <None Include="Animations\Gradient3_Mouse.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Spiral_Keyboard.chroma">
+    <None Include="Animations\Gradient3_Mousepad.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Spiral_Keypad.chroma">
+    <None Include="Animations\Gradient4_ChromaLink.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Spiral_Mouse.chroma">
+    <None Include="Animations\Gradient4_Headset.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Animations\Spiral_Mousepad.chroma">
+    <None Include="Animations\Gradient4_Keyboard.chroma">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Animations\Gradient4_KeyboardExtended.chroma">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Animations\Gradient4_Keypad.chroma">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Animations\Gradient4_Mouse.chroma">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Animations\Gradient4_Mousepad.chroma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
