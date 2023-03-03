@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1622
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp_ChromaGameLoopSample", "CSharp_ChromaGameLoopSample.csproj", "{6513D4C3-19E5-48D2-8408-192349552E93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp_ChromaGameLoopSampleUnicode", "CSharp_ChromaGameLoopSampleUnicode.csproj", "{6513D4C3-19E5-48D2-8408-192349552E93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
