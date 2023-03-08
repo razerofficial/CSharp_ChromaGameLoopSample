@@ -267,15 +267,15 @@ namespace CSharp_ChromaGameLoopSample
 #if !USE_ARRAY_EFFECTS
 
 
-		// This final animation will have a single frame
-		// Any color changes will immediately display in the next frame update.
-		string ANIMATION_FINAL_CHROMA_LINK = "Dynamic\\Final_ChromaLink.chroma";
-		string ANIMATION_FINAL_HEADSET = "Dynamic\\Final_Headset.chroma";
-		string ANIMATION_FINAL_KEYBOARD = "Dynamic\\Final_Keyboard.chroma";
+        // This final animation will have a single frame
+        // Any color changes will immediately display in the next frame update.
+        string ANIMATION_FINAL_CHROMA_LINK = "Dynamic\\Final_ChromaLink.chroma";
+        string ANIMATION_FINAL_HEADSET = "Dynamic\\Final_Headset.chroma";
+        string ANIMATION_FINAL_KEYBOARD = "Dynamic\\Final_Keyboard.chroma";
         string ANIMATION_FINAL_KEYBOARD_EXTENDED = "Dynamic\\Final_KeyboardExtended.chroma";
         string ANIMATION_FINAL_KEYPAD = "Dynamic\\Final_Keypad.chroma";
-		string ANIMATION_FINAL_MOUSE = "Dynamic\\Final_Mouse.chroma";
-		string ANIMATION_FINAL_MOUSEPAD = "Dynamic\\Final_Mousepad.chroma";
+        string ANIMATION_FINAL_MOUSE = "Dynamic\\Final_Mouse.chroma";
+        string ANIMATION_FINAL_MOUSEPAD = "Dynamic\\Final_Mousepad.chroma";
 
 #endif
 
@@ -337,30 +337,30 @@ namespace CSharp_ChromaGameLoopSample
 
 #if !USE_ARRAY_EFFECTS
 
-		void SetupAnimation1D(string path, Device1D device)
-		{
-			int animationId = ChromaAnimationAPI.GetAnimation(path);
-			if (animationId == -1)
-			{
-				animationId = ChromaAnimationAPI.CreateAnimationInMemory((int)DeviceType.DE_1D, (int)device);
-				ChromaAnimationAPI.CopyAnimation(animationId, path);
-				ChromaAnimationAPI.CloseAnimation(animationId);
-				ChromaAnimationAPI.MakeBlankFrames(animationId, 1, 0.033f, 0);
+        void SetupAnimation1D(string path, Device1D device)
+        {
+            int animationId = ChromaAnimationAPI.GetAnimation(path);
+            if (animationId == -1)
+            {
+                animationId = ChromaAnimationAPI.CreateAnimationInMemory((int)DeviceType.DE_1D, (int)device);
+                ChromaAnimationAPI.CopyAnimation(animationId, path);
+                ChromaAnimationAPI.CloseAnimation(animationId);
+                ChromaAnimationAPI.MakeBlankFramesName(path, 1, 0.033f, 0);
 
             }
-		}
+        }
 
-		void SetupAnimation2D(string path, Device2D device)
-		{
-			int animationId = ChromaAnimationAPI.GetAnimation(path);
-			if (animationId == -1)
-			{
-				animationId = ChromaAnimationAPI.CreateAnimationInMemory((int)DeviceType.DE_2D, (int)device);
-				ChromaAnimationAPI.CopyAnimation(animationId, path);
-				ChromaAnimationAPI.CloseAnimation(animationId);
-				ChromaAnimationAPI.MakeBlankFrames(animationId, 1, 0.033f, 0);
+        void SetupAnimation2D(string path, Device2D device)
+        {
+            int animationId = ChromaAnimationAPI.GetAnimation(path);
+            if (animationId == -1)
+            {
+                animationId = ChromaAnimationAPI.CreateAnimationInMemory((int)DeviceType.DE_2D, (int)device);
+                ChromaAnimationAPI.CopyAnimation(animationId, path);
+                ChromaAnimationAPI.CloseAnimation(animationId);
+                ChromaAnimationAPI.MakeBlankFramesName(path, 1, 0.033f, 0);
             }
-		}
+        }
 
 #endif
 
@@ -824,8 +824,8 @@ namespace CSharp_ChromaGameLoopSample
 
 #if !USE_ARRAY_EFFECTS
 
-				SetupAnimation1D(ANIMATION_FINAL_CHROMA_LINK, Device1D.ChromaLink);
-				SetupAnimation1D(ANIMATION_FINAL_HEADSET, Device1D.Headset);
+                SetupAnimation1D(ANIMATION_FINAL_CHROMA_LINK, Device1D.ChromaLink);
+                SetupAnimation1D(ANIMATION_FINAL_HEADSET, Device1D.Headset);
                 if (_mExtended)
                 {
                     SetupAnimation2D(ANIMATION_FINAL_KEYBOARD_EXTENDED, Device2D.KeyboardExtended);
@@ -836,9 +836,9 @@ namespace CSharp_ChromaGameLoopSample
                     SetupAnimation2D(ANIMATION_FINAL_KEYBOARD, Device2D.Keyboard);
                     ChromaAnimationAPI.SetChromaCustomFlagName(ANIMATION_FINAL_KEYBOARD, true);
                 }
-				SetupAnimation2D(ANIMATION_FINAL_KEYPAD, Device2D.Keypad);
-				SetupAnimation2D(ANIMATION_FINAL_MOUSE, Device2D.Mouse);
-				SetupAnimation1D(ANIMATION_FINAL_MOUSEPAD, Device1D.Mousepad);
+                SetupAnimation2D(ANIMATION_FINAL_KEYPAD, Device2D.Keypad);
+                SetupAnimation2D(ANIMATION_FINAL_MOUSE, Device2D.Mouse);
+                SetupAnimation1D(ANIMATION_FINAL_MOUSEPAD, Device1D.Mousepad);
 
 #endif
 
@@ -991,8 +991,8 @@ namespace CSharp_ChromaGameLoopSample
 
 #else
 
-				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_CHROMA_LINK, 0, 0.033f, colorsChromaLink, sizeChromaLink, null, 0);
-				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_HEADSET, 0, 0.033f, colorsHeadset, sizeHeadset, null, 0);
+                ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_CHROMA_LINK, 0, 0.033f, colorsChromaLink, sizeChromaLink, null, 0);
+                ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_HEADSET, 0, 0.033f, colorsHeadset, sizeHeadset, null, 0);
                 if (_mExtended)
                 {
                     ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_KEYBOARD_EXTENDED, 0, 0.033f, colorsKeyboardExtended, sizeKeyboardExtended, colorsKeyboardKeys, sizeKeyboard);
@@ -1001,13 +1001,13 @@ namespace CSharp_ChromaGameLoopSample
                 {
                     ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_KEYBOARD, 0, 0.033f, colorsKeyboard, sizeKeyboard, colorsKeyboardKeys, sizeKeyboard);
                 }
-				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_KEYPAD, 0, 0.033f, colorsKeypad, sizeKeypad, null, 0);
-				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_MOUSE, 0, 0.033f, colorsMouse, sizeMouse, null, 0);
-				ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_MOUSEPAD, 0, 0.033f, colorsMousepad, sizeMousepad, null, 0);
+                ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_KEYPAD, 0, 0.033f, colorsKeypad, sizeKeypad, null, 0);
+                ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_MOUSE, 0, 0.033f, colorsMouse, sizeMouse, null, 0);
+                ChromaAnimationAPI.UpdateFrameName(ANIMATION_FINAL_MOUSEPAD, 0, 0.033f, colorsMousepad, sizeMousepad, null, 0);
 
-				// display the change
-				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_CHROMA_LINK, 0);
-				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_HEADSET, 0);
+                // display the change
+                ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_CHROMA_LINK, 0);
+                ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_HEADSET, 0);
                 if (_mExtended)
                 {
                     ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_KEYBOARD_EXTENDED, 0);
@@ -1016,9 +1016,9 @@ namespace CSharp_ChromaGameLoopSample
                 {
                     ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_KEYBOARD, 0);
                 }
-				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_KEYPAD, 0);
-				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_MOUSE, 0);
-				ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_MOUSEPAD, 0);
+                ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_KEYPAD, 0);
+                ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_MOUSE, 0);
+                ChromaAnimationAPI.PreviewFrameName(ANIMATION_FINAL_MOUSEPAD, 0);
 
 #endif
 
